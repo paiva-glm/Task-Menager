@@ -24,4 +24,27 @@ class Criar_tarefasController extends Controller
 
         return redirect(route('listar.tarefas'));
     }
+
+    public function deletar_tarefa($id)
+    {
+        
+        $tarefa = tarefas::findOrFail($id);
+        
+        $tarefa->delete();
+
+        return redirect()->route('listar.tarefas')->with('sucesso', 'Tarefa excluída com sucesso!');
+    }
+
+    public function deletar_por_nome($nome_tarefa){
+    // O método delete() direto após o where() apaga TODOS os registros com esse nome
+    $registrosApagados = tarefas::where('nome_tarefa', $nome_tarefa)->delete();
+
+    // Uma validação opcional: Se ele não apagou nada (registros = 0)
+    if ($registrosApagados === 0) {
+        return redirect()->route('listar.tarefas')->with('erro', 'Nenhuma tarefa encontrada com esse nome.');
+    }
+
+    // Se deu certo, redireciona com sucesso
+    return redirect()->route('listar.tarefas')->with('sucesso', $registrosApagados . ' tarefa(s) excluída(s)!');
+}
 }
