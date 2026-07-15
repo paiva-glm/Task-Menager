@@ -20,7 +20,6 @@ return new class extends Migration
             $table->boolean('concluida')->default(false);
             $table->dateTime('created_att')->useCurrent();
             $table->dateTime('update_att')->useCurrent()->useCurrentOnUpdate();
-            $table->timestamps();
         });
     }
 
