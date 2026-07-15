@@ -42,5 +42,8 @@ Antes de começar, você vai precisar ter instalado em sua máquina:
 
 ### Passo a Passo
 
-* composer install
-* npm install
+'composer install
+'npm install
+'php artisan migrate
+'npm run dev
+'php artisan serve
