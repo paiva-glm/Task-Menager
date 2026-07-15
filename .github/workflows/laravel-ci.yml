@@ -1,0 +1,62 @@
+name: Laravel & Tailwind CI
+
+# O workflow será acionado ao fazer push ou pull request na branch 'main'
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    # 1. Baixa o código do seu repositório para o runner
+    - name: Checkout do código
+      uses: actions/checkout@v4
+
+    # 2. Configura o ambiente PHP
+    - name: Configurar PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.4' # Altere para a versão que você usa (ex: 8.1, 8.3)
+        extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite3, pdo_sqlite, bcmath, soap, intl, readline, ldap, msgpack, igbinary, redis, swoole, memcached, pcov, xdebug
+        coverage: none
+
+    # 3. Instala as dependências do Laravel via Composer
+    - name: Instalar dependências do PHP (Composer)
+      run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+
+    # 4. Configura o ambiente Node.js (necessário para o Tailwind/Vite)
+    - name: Configurar Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20' # Altere caso precise de uma versão específica do Node
+
+    # 5. Instala as dependências do frontend via NPM (incluindo o Tailwind)
+    - name: Instalar dependências do Frontend (NPM)
+      run: npm install
+
+    # 6. Compila o Tailwind CSS e outros assets
+    - name: Compilar assets (Vite / Tailwind)
+      run: npm run build
+
+    # 7. Prepara o arquivo de configuração do Laravel
+    - name: Copiar arquivo .env
+      run: cp .env.example .env
+
+    # 8. Gera a chave de segurança da aplicação
+    - name: Gerar App Key
+      run: php artisan key:generate
+
+    # 9. Cria um banco de dados SQLite vazio para os testes rodarem
+    - name: Criar banco de dados SQLite
+      run: touch database/database.sqlite
+
+    # 10. Executa a suíte de testes do Laravel
+    - name: Rodar testes (PHPUnit / Pest)
+      env:
+        DB_CONNECTION: sqlite
+        DB_DATABASE: database/database.sqlite
+      run: php artisan test
