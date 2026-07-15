@@ -49,3 +49,12 @@ Antes de começar, você vai precisar ter instalado em sua máquina:
     npm run dev
     php artisan serve
 ```
+
+### endpoints
+
+* / |serve para criar tarefas
+* /lista |serve para listar as tarefas do banco de dados
+* /deletar/{id} |serve para deletar a tarefa selecionada por id (deve ser passado o id na url)
+* /deletar/nome/{nome da tarefa} |serve para deletar a tarefa pelo nome (deve ser passado o nome pela url)
+* /editar/{id} |serve para atualizar a tarefa(o id deve ser passado na url)
+* /status/{id} |serve para trocar o status de concluido da tarefa(id deve ser passado na url)
