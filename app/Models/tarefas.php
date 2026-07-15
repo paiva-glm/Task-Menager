@@ -16,6 +16,7 @@ class tarefas extends Model
         'nome_tarefa', 
         'descricao', 
         'local', 
-        'data' 
+        'data',
+        'concluida'
     ];
 }
