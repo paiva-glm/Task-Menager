@@ -22,7 +22,7 @@ class Criar_tarefasController extends Controller
             ]);
         tarefas::create($tabelacriada);
 
-        return redirect(route('listar.tarefas'));
+        return redirect()->route('listar.tarefas');
     }
 
     public function deletar_tarefa($id)
@@ -67,7 +67,18 @@ class Criar_tarefasController extends Controller
 
         $tarefa->update($dadosValidados);
 
-        // Redireciona de volta para a lista
+        
         return redirect()->route('listar.tarefas')->with('sucesso', 'Tarefa atualizada com sucesso!');
+    }
+
+    public function alternar_status($id){
+        
+        $tarefa = tarefas::findOrFail($id);
+
+        $tarefa->concluida = !$tarefa->concluida;
+
+        $tarefa->save();
+
+        return redirect()->back()->with('sucesso', 'Status da tarefa atualizado!');
     }
 }
