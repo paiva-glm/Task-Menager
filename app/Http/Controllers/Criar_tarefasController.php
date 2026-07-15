@@ -44,7 +44,30 @@ class Criar_tarefasController extends Controller
         return redirect()->route('listar.tarefas')->with('erro', 'Nenhuma tarefa encontrada com esse nome.');
     }
 
-    // Se deu certo, redireciona com sucesso
+    
     return redirect()->route('listar.tarefas')->with('sucesso', $registrosApagados . ' tarefa(s) excluída(s)!');
-}
+    }
+
+    public function editar_tarefa($id){
+
+        $tarefa = tarefas::findOrFail($id);
+        
+        return view('editar_tarefa', compact('tarefa')); 
+    }
+
+    public function atualizar_tarefa(Request $request, $id){
+        $dadosValidados = $request->validate([
+            'nome_tarefa' => 'required|string|max:255',
+            'descricao'   => 'nullable|string',
+            'local'       => 'nullable|string|max:255',
+            'data'        => 'nullable|date',
+        ]);
+
+        $tarefa = tarefas::findOrFail($id);
+
+        $tarefa->update($dadosValidados);
+
+        // Redireciona de volta para a lista
+        return redirect()->route('listar.tarefas')->with('sucesso', 'Tarefa atualizada com sucesso!');
+    }
 }
