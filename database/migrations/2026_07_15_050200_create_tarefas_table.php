@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('tarefas', function (Blueprint $table) {
             $table->id();
             $table->string('nome_tarefa', 255);
-            $table->text('descricao');
-            $table->string('local', 255);
-            $table->dateTime('data');
+            $table->text('descricao')->nullable();
+            $table->string('local', 255)->nullable();
+            $table->dateTime('data')->nullable();
             $table->boolean('concluida')->default(false);
             $table->dateTime('created_att')->useCurrent();
             $table->dateTime('update_att')->useCurrent()->useCurrentOnUpdate();
